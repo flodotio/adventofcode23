@@ -2,6 +2,7 @@ path = './input_data.txt'
 cubes = {'green': 13, 'red': 12, 'blue': 14}
 index = 1
 result = 0
+power_result = 0
 
 def readFile (path):
     lines = []
@@ -21,20 +22,17 @@ def convertToMap(game):
 
     # Loop through each round of the game
     for round in range(0, len(game)):
-        #print('Round: '+ str(round) + ' ' + game[round])
+
         values = {'green': 0, 'red': 0, 'blue': 0}
 
         # Loop through each color shown
         for show in game[round].split(','):
-            #print('Show: ' + show)
             
             # Loop through each available color
             for color in colors:
-                #print('Color: ' + color)
 
                 if color in show:
                     values[color] = show.replace(color, '')
-                    #print('Hit')
                     break
 
         map.append(values)
@@ -42,14 +40,12 @@ def convertToMap(game):
     return map
 
 def getMax(game):
-    #print(game)
+
     max = {'green': 0, 'red': 0, 'blue': 0}
 
     for round in game:
-        #print(round)
 
         for color in round:
-            #print(round[color])
             if int(round[color]) > max[color]:
                 max[color] = int(round[color])
 
@@ -65,13 +61,21 @@ def isPossible(game, cubes):
     
     return True
 
+def getPower(game):
+    
+    return game['green'] * game['red'] * game['blue']
 
 
+## Main routine ##
 for game in readFile(path):
 
-    if isPossible(getMax(convertToMap(game)), cubes):
+    max = getMax(convertToMap(game))
+    power_result += getPower(max)
+
+    if isPossible(max, cubes):
         result += index
     
     index += 1
  
-print(result)
+print('Result: ' + str(result))
+print('Power: ' + str(power_result))
