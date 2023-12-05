@@ -21,21 +21,23 @@ def explode (data):
 def findNumbers(line, line_number):
     numbers = []
     number = ''
-    i = 0
 
-    for char in line:
-          #### Fix here, if line ends with valid number
-        if char.isnumeric():
-            number += str(char)
+    for i in range(0, len(line)):
+
+        if line[i].isnumeric():
+            number += str(line[i])
+
         elif line[i-1].isnumeric():
             if isEnginePart(line_number, i, len(number)):
                 numbers.append(number)
                 number = ''
+                
             else:
                 number = ''
-        
-        i += 1
 
+    if isEnginePart(line_number, 139, len(number)):
+        numbers.append(number)
+            
     return numbers
 
 def isEnginePart (line_number, index, length):
@@ -50,9 +52,8 @@ def isEnginePart (line_number, index, length):
 def calcResult (lines):
     result = 0
     
-    for i in range(112, 113):
+    for i in range(0, 140):
         for number in findNumbers(lines[i], i): 
-            print(number)
             result += int(number)
 
     return result
@@ -60,4 +61,4 @@ def calcResult (lines):
 #print(readFile(path))
 lines = explode(readFile(path))
 
-print('Result: ' + str(calcResult(lines)))
+print('Result Part 1: ' + str(calcResult(lines)))
